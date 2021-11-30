@@ -7,13 +7,12 @@ router.get('/', (req,res) => {
     //Access our User model and run .findAll( method)
     User.findAll({ 
         attributes: { exclude: [ 'password'] },
-        where: {
-            id: req.params.id
+        
         }    
-    })
+    )
     .then(dbUserData => res.json(dbUserData))
     .catch(err => {
-        console.lof(err);
+        console.log(err);
         res.status(500).json(err);
     });
 });
