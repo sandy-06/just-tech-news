@@ -52,6 +52,21 @@ router.post('/', (req, res) => {
         res.status(500).json(err);
     });
 });
+router.post('/login', (req,res) => {
+    // expects {email: 'leanantino@gmail.com', password: 'password1234"}
+    User.findOne({
+        where: {
+            email: req.body.email
+        }
+    }).then(dbUserData => {
+        if (!dbUserData) {
+            res.status(400).json({ message: "No user with that email address!"});
+            return;
+        }
+        res.json({ user: dbUserData });
+        //veirfy user
+    });
+});
 
 //PUT /api/users/1
 router.put('/:id', (req, res) => {
