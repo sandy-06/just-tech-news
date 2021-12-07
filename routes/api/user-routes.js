@@ -7,13 +7,12 @@ router.get('/', (req,res) => {
     //Access our User model and run .findAll( method)
     User.findAll({ 
         attributes: { exclude: [ 'password'] },
-        where: {
-            id: req.params.id
+        
         }    
-    })
+    )
     .then(dbUserData => res.json(dbUserData))
     .catch(err => {
-        console.lof(err);
+        console.log(err);
         res.status(500).json(err);
     });
 });
@@ -21,6 +20,7 @@ router.get('/', (req,res) => {
 //GET /api/user/1
 router.get('/:id', (req,res) => {
     User.findOne({
+        attributes: { exclude: ['password' ]},
         where: {
             id: req.params.id
         }
@@ -51,6 +51,29 @@ router.post('/', (req, res) => {
     .catch(err => {
         console.log(err);
         res.status(500).json(err);
+    });
+});
+router.post('/login', (req,res) => {
+    // expects {email: 'leanantino@gmail.com', password: 'password1234"}
+    User.findOne({
+        where: {
+            email: req.body.email
+        }
+        // add comment syntax in front of this line in the .then()
+        // res.json({ user: dbUserData }
+    }).then(dbUserData => {
+        if (!dbUserData) {
+            res.status(400).json({ message: "No user with that email address!"});
+            return;
+        }
+     //   res.json({ user: dbUserData });
+        //verify user
+        const validPassword = dbUserData.checkPassword(req.body.password);
+        if (!validPassword) {
+            res.status(400).json({ message: 'Incorrect password!'});
+            return;
+        }
+        res.json({ user: dbUserData, message:'You are now logged in!'});
     });
 });
 
