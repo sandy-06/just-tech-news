@@ -1,6 +1,6 @@
 const router = require('express').Router();
-const e = require('express');
-const { user, User } = require('../../models');
+
+const { User } = require('../../models');
 
 //GET /api/users
 router.get('/', (req,res) => {
@@ -13,7 +13,7 @@ router.get('/', (req,res) => {
     })
     .then(dbUserData => res.json(dbUserData))
     .catch(err => {
-        console.lof(err);
+        console.log(err);
         res.status(500).json(err);
     });
 });
@@ -66,7 +66,7 @@ router.put('/:id', (req, res) => {
     })
     .then(dbUserData => {
         if (!dbUserData[0]) {
-            res.status(404).json({message: 'Noe use found with this id'});
+            res.status(404).json({message: 'No one use found with this id'});
             return;
         }
         res.json(dbUserData);
