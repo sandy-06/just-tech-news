@@ -40,21 +40,12 @@ router.get('/', (req, res) => {
         });
 });
 router.get('/login', (req, res) => {
-    res.render('login');
-  });
+    if(req.session.loggedIn) {
+        res.redirect('/');
+        return;
+    }
 
-  router.get('/post/:id', (req,res) => {
-      const post = {
-          id: 1,
-          post_url: 'https://handlebarsjs.com/guide/',
-          title: 'Handlebars Doc',
-          created_at: new Date(),
-          vote_count: 10,
-          user: {
-              username: 'test_user'
-          }
-      };
-      res.render('single-post', { post });
+    res.render('login');
   });
 
 
