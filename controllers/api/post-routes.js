@@ -92,6 +92,11 @@ router.post('/', (req, res) => {
 
 //PUT /api/post/upvote
 router.put('/upvote', (req, res) => {
+  // make sure the session exist first
+  if(req.session) {
+    // pass session id along with all destructured properties on req.body
+    
+  }
   //custom static method created in models/Post.js
   Post.upvote({ ...req.body, user_id: req.session.user_id }, { Vote, Comment, User })
   .then(updatedVoteData => res.json(updatedVoteData))
